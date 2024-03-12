@@ -1,6 +1,6 @@
 const express = require("express");
 const zod = require("zod"); // using the zod library for input validation
-const { User } = require("../db");
+const { User, Account } = require("../db");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
@@ -8,7 +8,6 @@ const { JWT_SECRET } = require("../config");
 //hashing the passwords before storing them into the db
 const bcrypt = require("bcrypt");
 const { authMiddleware } = require("../middleware");
-const { parse } = require("dotenv");
 
 // all the user related routes and defined in detail here:
 
@@ -29,7 +28,8 @@ async function hashPassword(password) {
 
 // a zod schema used for input validation while passing inputs to the signup form
 const signupSchema = zod.object({
-  username: zod.string().email(),
+  username: zod.string(),
+  email: zod.string().email(),
   password: zod.string(),
   firstName: zod.string(),
   lastName: zod.string(),
@@ -37,7 +37,6 @@ const signupSchema = zod.object({
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, password, firstName, lastName } = data;
     const { success, data } = signupSchema.safeParse(req.body);
     if (!success) {
       return res.status(400).json({
@@ -45,6 +44,7 @@ router.post("/signup", async (req, res) => {
       });
     }
 
+    const { username, email, password, firstName, lastName } = data;
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
@@ -59,9 +59,17 @@ router.post("/signup", async (req, res) => {
     // create a user in the db
     const newUser = await User.create({
       username,
+      email,
       password: hashedPassword,
       firstName,
       lastName,
+    });
+
+    const userId = newUser._id;
+
+    await Account.create({
+      userId,
+      balance: 1 + Math.random() * 1000,
     });
 
     // find out the token using the sign function from jwt library
@@ -74,18 +82,18 @@ router.post("/signup", async (req, res) => {
 });
 
 const signinSchema = zod.object({
-  username: zod.string().email(),
+  username: zod.string(),
   password: zod.string(),
 });
 
 router.post("/signin", async (req, res) => {
   try {
-    const { username, password } = data;
     const { success, data } = signinSchema.safeParse(req.body);
     if (!success) {
       res.status(400).json({ msg: "Invalid Inputs" });
     }
 
+    const { username, password } = data;
     const user = await User.findOne({ username });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -171,7 +179,7 @@ router.get("/all-users", authMiddleware, async (req, res) => {
       pageInfo: {
         currentPage: page,
         pageSize: limit,
-        totalUsers: await users.countDocuments(),
+        totalUsers: await User.countDocuments(),
       },
     });
   } catch (error) {
