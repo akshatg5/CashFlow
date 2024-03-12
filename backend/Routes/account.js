@@ -22,12 +22,22 @@ router.get("/balance", authMiddleware, async (req, res) => {
   }
 });
 
+const transferSchema = zod.object({
+    amount : zod.number(),
+    to : zod.string()
+})
+
 router.post("/transfer", authMiddleware, async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const { amount, to } = req.body;
-
+    const {success,data} = transferSchema.safeParse(req.body)
+    if (!success) {
+        session.abortTransaction()
+        return res.status(400).json({msg : "Invalid inputs"})
+    }
+    const { amount, to } = data;
+    
     // fetching the accounts while in the transaction session
     const account = await Account.findOne({ userId: req.userId }).session(
       session
