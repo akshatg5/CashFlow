@@ -1,14 +1,26 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export const Button = ({btnText}) => {
+export const Button = ({ btnText, warningText, toLink, linkBtnText }) => {
   return (
-    <div>
+    <div className="text-center">
       <button
         type="button"
-        className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        className="text-blue-800 font-semibold items-center bg-white rounded-md px-20 py-2"
       >
-        {btnText}
+        <h1>{btnText}</h1>
       </button>
+      <Link to={toLink}>
+        <div className="flex">
+          <h1 className="p-2 text-white text-center">{warningText}</h1>
+          <button
+            type="button"
+            className="px-2 text-white rounded-md "
+          >
+            <h1 className="underline">{linkBtnText}</h1>
+          </button>
+        </div>
+      </Link>
     </div>
   );
 };
