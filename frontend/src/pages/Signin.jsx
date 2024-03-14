@@ -9,7 +9,34 @@ import { useNavigate } from "react-router-dom";
 export const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const handleSignIn = async () => {
+    try {
+
+        const response = await axios.post(
+            "http://localhost:3000/cfapi/v1/user/signin",
+            {
+                username,
+                password,
+            }
+            );
+            localStorage.setItem("username", username);
+            localStorage.setItem(
+                `security-token-for-${username}`,
+                response.data.token
+                );
+                navigate("/dashboard");
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.error) {
+                    setError("Invalid username or password. Try again!")
+                }
+                else {
+                    setError("An unexpected error occured.Please recheck and try again.")
+                }
+            }
+  }
 
   return (
     <div className="bg-blue-800 h-screen flex items-center justify-center align-middle">
@@ -37,24 +64,14 @@ export const Signin = () => {
         />
         <div className="flex justify-center mt-10">
           <Button
-            onClick={async () => {
-              const response = await axios.post(
-                "http://localhost:3000/cfapi/v1/user/signin",
-                {
-                  username,
-                  password,
-                }
-              );
-              localStorage.setItem('username',username);
-              localStorage.setItem(`security-token-for-${username}`,response.data.token)
-              navigate('/dashboard');
-            }}
+            onClick={handleSignIn}
             btnText={"Sign In"}
             warningText={"Create a new account here"}
             toLink={"/signup"}
             linkBtnText={"Sign Up"}
           />
         </div>
+        {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
       </div>
     </div>
   );

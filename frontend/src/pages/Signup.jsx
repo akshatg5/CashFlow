@@ -12,8 +12,35 @@ export const Signup = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastname] = useState("");
-
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/cfapi/v1/user/signup",
+        {
+          username,
+          email,
+          password,
+          firstName,
+          lastName,
+        }
+      );
+      localStorage.setItem("username", username);
+      localStorage.setItem(
+        `security-token-for-${username}`,
+        response.data.token
+      );
+      navigate("/dashboard");
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setError("Invalid Inputs. Try again!");
+      } else {
+        setError("Invalid inputs.Please recheck and try again.");
+      }
+    }
+  };
 
   return (
     <div className="bg-blue-800 h-screen flex items-center justify-center align-middle">
@@ -58,27 +85,14 @@ export const Signup = () => {
         />
         <div className="flex justify-center mt-10">
           <Button
-            onClick={ async () => {
-              const response = await axios.post(
-                "http://localhost:3000/cfapi/v1/user/signup",
-                {
-                  username,
-                  email,
-                  password,
-                  firstName,
-                  lastName,
-                }
-              );
-              localStorage.setItem('username',username)
-              localStorage.setItem(`security-token-for-${username}`,response.data.token);  
-              navigate('/dashboard')
-            }}
+            onClick={handleSignup}
             btnText={"Sign Up"}
             warningText={"Already have an account?"}
             toLink={"/signin"}
             linkBtnText={"Sign In"}
           />
         </div>
+        {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
         <div className="text-center text-white mt-6">Forgot password?</div>
       </div>
     </div>
