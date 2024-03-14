@@ -113,6 +113,26 @@ const updateInfoSchema = zod.object({
   lastName: zod.string().optional(),
 });
 
+router.get('/userprofile',authMiddleware,async (req,res) => {
+  try {
+    const user = await User.findById(req.userId)
+    if(!user) {
+      return res.status(404).json({msg : "User not found"})
+    }
+
+    res.json({
+      username : user.username,
+      email : user.email,
+      firstName : user.firstName,
+      lastName : user.lastName
+    })
+
+  } catch (error) {
+    console.error("Error while fetching user profile",error)
+    res.status(500).json({msg : "User profile server error"})
+  }
+})
+
 router.put("/update-info", authMiddleware, async (req, res) => {
   try {
     const { success, data } = updateInfoSchema.safeParse(req.body);
