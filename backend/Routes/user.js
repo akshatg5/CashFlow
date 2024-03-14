@@ -17,8 +17,7 @@ function generateToken(userId) {
     {
       userId,
     },
-    JWT_SECRET,
-    { expiresIn: "1h" }
+    JWT_SECRET
   );
 }
 
@@ -137,7 +136,8 @@ router.put("/update-info", authMiddleware, async (req, res) => {
 // the route that will get all the users available in the app
 router.get("/all-users", authMiddleware, async (req, res) => {
   try {
-    const filter = req.query.filter || "";
+    let filter = req.query.filter || "";
+    // filter = new RegExp(filter, "i");
 
     if (typeof filter !== "string") {
       return res

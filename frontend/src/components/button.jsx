@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const Button = ({ btnText, warningText, toLink, linkBtnText }) => {
+export const Button = ({ btnText, warningText, toLink, linkBtnText,onClick }) => {
   return (
-    <div className="text-center">
-      <button
+    <div className="text-center items-center">
+      <button onClick={onClick}
         type="button"
         className="text-blue-800 font-semibold items-center bg-white rounded-md px-20 py-2"
       >
