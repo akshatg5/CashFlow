@@ -15,7 +15,7 @@ export const Usercard = () => {
     const username =localStorage.getItem('username')
     const token = localStorage.getItem(`security-token-for-${username}`);
     const headers = {Authorization : `Bearer ${token}`}
-    axios.get(("http://localhost:3000/cfapi/v1/user/all-users?filter="+filter),{headers}).then(response => {
+    axios.get(("https://cash-flow-backend.vercel.app/cfapi/v1/user/all-users?filter="+filter),{headers}).then(response => {
       setUsers(response.data.user)
     }).catch(error => {
       console.error("Error fetching the user list: ",error)

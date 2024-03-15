@@ -18,7 +18,7 @@ export const Signup = () => {
   const handleSignup = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/cfapi/v1/user/signup",
+        "https://cash-flow-backend.vercel.app/cfapi/v1/user/signup",
         {
           username,
           email,

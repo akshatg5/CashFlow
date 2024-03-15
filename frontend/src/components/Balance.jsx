@@ -11,7 +11,7 @@ export const Balance = () => {
   useEffect(() => {
     const fetchBalance = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/cfapi/v1/account/balance",{headers})
+            const response = await axios.get("https://cash-flow-backend.vercel.app/cfapi/v1/account/balance",{headers})
             const formatBalance = Number(response.data.balance).toFixed(2)
             setBalance(formatBalance)
         } catch (error) {

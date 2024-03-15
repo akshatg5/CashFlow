@@ -22,7 +22,7 @@ export const SendMoney = () => {
     const fetchBalance = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/cfapi/v1/account/balance",
+          "https://cash-flow-backend.vercel.app/cfapi/v1/account/balance",
           { headers }
         );
         const formatBalance = Number(response.data.balance).toFixed(2);
@@ -39,7 +39,7 @@ export const SendMoney = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/cfapi/v1/account/transfer",
+        "https://cash-flow-backend.vercel.app/cfapi/v1/account/transfer",
         { to: id, amount: parseFloat(amount) },
         { headers }
       );

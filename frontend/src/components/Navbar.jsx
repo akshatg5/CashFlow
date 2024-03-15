@@ -18,7 +18,7 @@ export const Navbar = () => {
       const headers = { Authorization: `Bearer ${token}` };
       try {
         const response = await axios.get(
-          "http://localhost:3000/cfapi/v1/user/userprofile",
+          "https://cash-flow-backend.vercel.app/cfapi/v1/user/userprofile",
           { headers }
         );
         setFirstname(response.data.firstName);
