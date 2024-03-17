@@ -1,4 +1,4 @@
-## Building a basic version of PayTM - CashFlo
+## Building a basic version of PayTM - CashFlow
 Technologies Used :
     ExpressJS
     Zod
