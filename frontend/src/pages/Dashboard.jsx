@@ -7,7 +7,7 @@ import { Usercard } from "../components/Usercard";
 export const Dashboard = () => {
     const [user,setuser] = useState("")
     return (
-        <div className="bg-blue-800 h-screen">
+        <div className="bg-blue-800 h-full">
             <Navbar/>
             <hr />
             <Balance/>
