@@ -18,6 +18,15 @@ export const SendMoney = () => {
   const [transfermsg, setTransfermsg] = useState("");
   const navigate = useNavigate();
 
+  const speakText = (text, voiceName, pitch = 1, rate = 1) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = speechSynthesis.getVoices().find(voice => voice.name === voiceName); // Set the voice
+    utterance.pitch = pitch; // Set the pitch
+    utterance.rate = rate; // Set the rate (speed)
+    speechSynthesis.speak(utterance);
+  };
+
+
   useEffect(() => {
     const fetchBalance = async () => {
       try {
@@ -46,10 +55,13 @@ export const SendMoney = () => {
       // Handle success
       console.log(response);
       setTransfermsg(response.data.msg);
+
+      // Speak the amount and name
+      speakText(`Cashflow par ${name} ko ${amount} rupay prapt hue`, "Google हिन्दी", 1, 1);
       setTimeout(() => {
         navigate("/dashboard");
         setLoading(false)
-      }, 4000);
+      }, 6000);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setError("Insufficient Balance. Try again!");
