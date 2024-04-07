@@ -4,10 +4,12 @@ const cors = require("cors")
 const app = express()
 
 app.use(cors())
+
 app.use(express.json())
 
 // main route to handle the APIs
 app.use("/cfapi/v1",appRouter)
+// Default Route
 app.get('/', (req, res) => {
     res.send('Welcome to cashflow API!');
 });
