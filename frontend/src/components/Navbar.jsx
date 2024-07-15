@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Heading } from "./heading";
 import { SubHeading } from "./subHeading";
 import axios from "axios";
-import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
-
 
 export const Navbar = () => {
   const [firstname, setFirstname] = useState("");
@@ -32,25 +30,25 @@ export const Navbar = () => {
 
   const handleLogout = () => {
     // when logging out simply clear the local storage for all the tokens
-    localStorage.removeItem("username")
-    navigate("/")
-  }
+    localStorage.removeItem("username");
+    navigate("/");
+  };
 
   return (
-    <div className="flex justify-between py-4">
-      <div className="ml-10">
-        <Heading heading={"CashFlow"} />
+    <div className="flex flex-col sm:flex-row justify-between py-4 px-4 sm:px-10">
+      <div className="mb-4 sm:mb-0">
+        <Heading heading={"CashFlow"} className="text-center sm:text-left" />
       </div>
-      <div className="mr-10 flex">
-      <div className="items-center align-middle mr-8 mt-1">
-        <SubHeading subheading={`Hello, ${firstname} ${lastname}`} />
-      </div>
+      <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8">
+        <div className="text-center sm:text-left">
+          <SubHeading subheading={`Hello, ${firstname} ${lastname}`} />
+        </div>
         <div>
           <button
             onClick={handleLogout}
-            className="bg-white text-blue-800 text-xl px-8 py-1 rounded-xl border font-semibold border-gray-200 shadow-xl"
+            className="bg-white text-blue-800 text-lg sm:text-xl px-6 sm:px-8 py-2 rounded-xl border font-semibold border-gray-200 shadow-xl"
           >
-            <h1>Logout</h1>
+            Logout
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Heading } from "../components/heading";
 import { SubHeading } from "../components/subHeading";
 import { InputBox } from "../components/inputBox";
 import { Button } from "../components/button";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Signup = () => {
@@ -37,53 +37,58 @@ export const Signup = () => {
       if (error.response && error.response.data && error.response.data.error) {
         setError("Invalid Inputs. Try again!");
       } else {
-        setError("Invalid inputs.Please recheck and try again.");
+        setError("Invalid inputs. Please recheck and try again.");
       }
     }
   };
 
   return (
-    <div className="bg-blue-800 h-screen flex items-center justify-center align-middle">
-      <div className="rounded-lg shadow-xl px-10 py-8 max-w-md align-middle border border-gray-300">
+    <div className="bg-blue-800 h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="rounded-lg shadow-xl px-6 py-8 sm:px-10 sm:py-10 max-w-md w-full border border-gray-300">
         <Heading
           heading={"Sign Up"}
-          className="text-center text-3xl font-bold mb-6"
+          className="text-center text-2xl sm:text-3xl font-bold mb-6"
         />
         <SubHeading
           subheading={"Fill the following details to continue."}
-          className="text-gray-600 text-center mb-8"
+          className="text-gray-600 text-center mb-6 sm:mb-8"
         />
         <InputBox
           onChange={(e) => {
             setUsername(e.target.value);
           }}
           placeholder={"Username"}
+          className="mb-4"
         />
         <InputBox
           onChange={(e) => {
             setEmail(e.target.value);
           }}
           placeholder={"Email"}
+          className="mb-4"
         />
         <InputBox
           onChange={(e) => {
             setPassword(e.target.value);
           }}
           placeholder={"Password"}
+          className="mb-4"
         />
         <InputBox
           onChange={(e) => {
             setFirstName(e.target.value);
           }}
           placeholder={"First Name"}
+          className="mb-4"
         />
         <InputBox
           onChange={(e) => {
             setLastname(e.target.value);
           }}
           placeholder={"Last Name"}
+          className="mb-6"
         />
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-6">
           <Button
             onClick={handleSignup}
             btnText={"Sign Up"}
@@ -92,8 +97,8 @@ export const Signup = () => {
             linkBtnText={"Sign In"}
           />
         </div>
-        {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
-        <div className="text-center text-white mt-6">Forgot password?</div>
+        {error && <p className="text-red-500 text-sm text-center mt-4">{error}</p>}
+        <div className="text-center text-blue-800 mt-6">Forgot password?</div>
       </div>
     </div>
   );
